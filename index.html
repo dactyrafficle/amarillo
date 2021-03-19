@@ -1,46 +1,94 @@
 <!DOCTYPE html>
 <html>
 
+
 <div id='container'></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script>
 
+<script src='Box.js'></script>
+<script src='makeBoxes.js'></script>
+
 <script>
 
-
-// x-y-w-h-arr
-
-// take array. if arr.length >=3, split into 2
-// if w>h or h>=w that informs the parent box of the next iteration
-
-let arr = [1, 4, 9, 8, 2, 2, 3, 5, 17, 21];
-let boxes = [];
-
-for (let i = 0; i < 71; i++) {
- let x = Math.random()*i*i;
- //arr.push(50+x); 
-}
+let data = [
+{"country_name":"USVI","region_name":"Caribbean","value":"1122"},
+{"country_name":"Antigua","region_name":"Caribbean","value":"1335"},
+{"country_name":"Suriname","region_name":"Caribbean","value":"3040"},
+{"country_name":"Fiji","region_name":"Caribbean","value":"740"},
+{"country_name":"St Kitts","region_name":"Caribbean","value":"3636"},
+{"country_name":"Dominica","region_name":"Caribbean","value":"2639"},
+{"country_name":"Belize","region_name":"Caribbean","value":"5864"},
+{"country_name":"Korea","region_name":"Caribbean","value":"2682"},
+{"country_name":"BVI","region_name":"Caribbean","value":"2100"},
+{"country_name":"El Salvador","region_name":"Caribbean","value":"4928"},
+{"country_name":"Aruba","region_name":"Americas","value":"11472"},
+{"country_name":"Nicaragua","region_name":"Caribbean","value":"6552"},
+{"country_name":"UAE","region_name":"Caribbean","value":"12432"},
+{"country_name":"Curacao","region_name":"Caribbean","value":"11910"},
+{"country_name":"Cayman Islands","region_name":"Caribbean","value":"9056"},
+{"country_name":"Colombia","region_name":"Caribbean","value":"3094"},
+{"country_name":"Grenada","region_name":"Caribbean","value":"6264"},
+{"country_name":"Paraguay","region_name":"Caribbean","value":"5605"},
+{"country_name":"Libya","region_name":"Caribbean","value":"4220"},
+{"country_name":"Saint Lucia","region_name":"Caribbean","value":"17262"},
+{"country_name":"Barbados","region_name":"Caribbean","value":"5764"},
+{"country_name":"Dominican Republic","region_name":"Caribbean","value":"6394"},
+{"country_name":"Honduras","region_name":"Caribbean","value":"11160"},
+{"country_name":"Saint Vincent and the Grenadines","region_name":"Caribbean","value":"15875"},
+{"country_name":"Yemen","region_name":"Caribbean","value":"9984"},
+{"country_name":"Peru","region_name":"Caribbean","value":"9477"},
+{"country_name":"Kenya","region_name":"Caribbean","value":"11564"},
+{"country_name":"Gaza","region_name":"Caribbean","value":"9483"},
+{"country_name":"West Bank","region_name":"Caribbean","value":"20820"},
+{"country_name":"Hong Kong","region_name":"Caribbean","value":"9610"},
+{"country_name":"Brazil","region_name":"Caribbean","value":"27328"},
+{"country_name":"Egypt","region_name":"Caribbean","value":"31581"},
+{"country_name":"Ghana","region_name":"Caribbean","value":"23664"},
+{"country_name":"Qatar","region_name":"Caribbean","value":"29540"},
+{"country_name":"Bermuda","region_name":"Caribbean","value":"13392"},
+{"country_name":"Bahamas","region_name":"Caribbean","value":"18611"},
+{"country_name":"South Africa","region_name":"Caribbean","value":"33098"},
+{"country_name":"Australia","region_name":"Caribbean","value":"15756"},
+{"country_name":"Nigeria","region_name":"Caribbean","value":"33240"},
+{"country_name":"Indonesia","region_name":"Caribbean","value":"39237"},
+{"country_name":"Israel","region_name":"Caribbean","value":"26040"},
+{"country_name":"Iraq","region_name":"Caribbean","value":"25929"},
+{"country_name":"Ecuador","region_name":"Caribbean","value":"29568"},
+{"country_name":"Jamaica","region_name":"Caribbean","value":"36900"},
+{"country_name":"United Kingdom","region_name":"Caribbean","value":"35098"},
+{"country_name":"Kuwait","region_name":"Caribbean","value":"26978"},
+{"country_name":"Saudi Arabia","region_name":"Caribbean","value":"25200"},
+{"country_name":"Chile","region_name":"Caribbean","value":"35231"},
+{"country_name":"Trinidad and Tobago","region_name":"Caribbean","value":"49700"},
+{"country_name":"Singapore","region_name":"Caribbean","value":"36006"},
+{"country_name":"Guyana","region_name":"Caribbean","value":"32396"},
+{"country_name":"Puerto Rico","region_name":"Caribbean","value":"32224"},
+{"country_name":"Mexico","region_name":"Caribbean","value":"38880"},
+{"country_name":"Philippines","region_name":"Caribbean","value":"51480"}
+]
 
 
 function setup() {
-  var c = createCanvas(600, 610);
+  let c = createCanvas(600, 610);
   c.parent('container');
   background(51);
-  makeBoxes(0, 0, width, height, arr);
-  console.log(boxes);
+  frameRate(1);
 }
 
 function draw() {
+ 
+ boxes = [];
+ // starts the recursion
+ makeBoxes(0, 0, width, height, data, "value");
 
-  background(51);
+ background(51);
  for (let i = 0; i < boxes.length; i++) {
    let b = boxes[i];
    b.display();
    b.hovered();
-
  }
-
 }
 
 function mousePressed(){
@@ -48,126 +96,6 @@ function mousePressed(){
   if (boxes[i].hover) {
    console.log(boxes[i]);
   }
- }
-}
-
-// look at box, is it greater in height than width?
-
-function makeBoxes(x,y,w,h,arr) {
-
-
- // break up the array into 2 pieces of roughly 50-50
- // sort
- 
- arr.sort(function(a,b) {
-  return a-b;
- });
- //console.log(arr);
- //console.log(arr);
- //console.log(Math.random());
- 
- if (arr.length >= 2) {
- 
-   let sum0 = 0;
-   let sum1 = 0;
-   let sum = 0;
-  // take big and small, splice add to arr1, then to arr2 etc
-  let new_arr = [[],[]];
-  
-  for (let i = 0; i < arr.length; i++) {
-
-    if (i >= (arr.length)/2) {
-      sum0 += arr[i];
-      sum += arr[i];
-      new_arr[0].push(arr[i]);
-     } else {
-      sum1 += arr[i];
-      sum += arr[i];
-      new_arr[1].push(arr[i]);
-     }
-
-  } 
-  
-  if (w >= h) {
-    makeBoxes(x,y,sum0/sum*w,h,new_arr[0]);
-    makeBoxes(x + sum0/sum*w,y,sum1/sum*w,h,new_arr[1]);
-  } else {
-    // height is greater than width
-    makeBoxes(x,y,w, sum0/sum*h,new_arr[0]);
-    makeBoxes(x,y + sum0/sum*h,w, sum1/sum*h,new_arr[1]);
-  }
- 
- } else {
-  // draw
-
-
-   let sum = 0;
-   for (let i = 0; i < arr.length; i++) {
-     sum += arr[i];
-   }
-   //console.log(sum);
-   
- // each one gets a box of its own, but how we draw it depends on the current box dimension
-   if (w >= h) {
-     // draw boxes vertically
-     let dw = 0;
-     for (let i = 0; i < arr.length; i++) {
-       stroke(51);
-       fill(205);
-       // create object
-       boxes.push(new Box(0 + x + dw/sum*w, 0 + y, arr[i]/sum*w-0*2, h-0*2, 255, 0, 0));
-       //rect(x + dh/sum*h, y, arr[i]*w, h);
-       dw += arr[i];
-     }
-
-  }
-   if (h > w) {
-     // draw boxes vertically
-     let dh = 0;
-     for (let i = 0; i < arr.length; i++) {
-       stroke(51);
-       fill(205);
-       // create object
-       boxes.push(new Box(0 + x, 0 + y + (dh/sum)*h, w-0*2, arr[i]/sum*h-0*2, 0, 0, 255));
-       //rect(x, y + (dw/sum)*h, w, arr[i]*h);
-       dh += arr[i];
-     }
-
-  }
- 
- }
- 
-
- 
- 
-
-
-
-
-
-
-}
-
-function Box(x, y, w, h, r, g, b) {
- this.x = x;
- this.y = y;
- this.w = w;
- this.h = h;
- this.r = r;
- this.g = g;
- this.b = b;
- this.hover = false;
-}
-Box.prototype.display = function() {
- strokeWeight(2);
- stroke(170);
- fill(this.r, this.g, this.b, 120);
- rect(this.x, this.y, this.w, this.h);
-}
-Box.prototype.hovered = function() {
- this.hover = false;
- if (mouseX > this.x && mouseX < (this.x+this.w) && mouseY > this.y && mouseY < (this.y+this.h)) {
-  this.hover = true;
  }
 }
 
