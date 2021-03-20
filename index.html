@@ -14,8 +14,8 @@
 let obj = fetch('data_1_group.json?x=' + Math.random()).then(r => r.json()).then(data => {
  
   // THIS PROCESS RETURNS A TREE STRUCTURE OBJECT FROM AN [nx3] DIMENSION ARRAY OF OBJECTS 
-  let big_group_desc = "region_name";
-  //let small_group_desc = "country_name";
+  let big_group_desc = "big_group_name";
+  //let small_group_desc = "small_group_name";
   return returnTreeMapObjectFromArrayOfObjects(data, big_group_desc);
 
  }).then(treemap_obj => {
