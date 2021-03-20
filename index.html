@@ -1,104 +1,29 @@
 <!DOCTYPE html>
 <html>
 
-
-<div id='container'></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script>
-
-<script src='Box.js'></script>
-<script src='makeBoxes.js'></script>
+<head>
+ <meta charset='utf-8'>
+ <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+ <link rel="icon" href="amarillo.png">
+ <script src='treemap_obj_from_array_of_objs.js'></script>
+ <script src='treemap_boxes_from_treemap_obj.js'></script>
+</head>
 
 <script>
 
-let data = [
-{"country_name":"USVI","region_name":"Caribbean","value":"1122"},
-{"country_name":"Antigua","region_name":"Caribbean","value":"1335"},
-{"country_name":"Suriname","region_name":"Caribbean","value":"3040"},
-{"country_name":"Fiji","region_name":"Caribbean","value":"740"},
-{"country_name":"St Kitts","region_name":"Caribbean","value":"3636"},
-{"country_name":"Dominica","region_name":"Caribbean","value":"2639"},
-{"country_name":"Belize","region_name":"Caribbean","value":"5864"},
-{"country_name":"Korea","region_name":"Caribbean","value":"2682"},
-{"country_name":"BVI","region_name":"Caribbean","value":"2100"},
-{"country_name":"El Salvador","region_name":"Caribbean","value":"4928"},
-{"country_name":"Aruba","region_name":"Americas","value":"11472"},
-{"country_name":"Nicaragua","region_name":"Caribbean","value":"6552"},
-{"country_name":"UAE","region_name":"Caribbean","value":"12432"},
-{"country_name":"Curacao","region_name":"Caribbean","value":"11910"},
-{"country_name":"Cayman Islands","region_name":"Caribbean","value":"9056"},
-{"country_name":"Colombia","region_name":"Caribbean","value":"3094"},
-{"country_name":"Grenada","region_name":"Caribbean","value":"6264"},
-{"country_name":"Paraguay","region_name":"Caribbean","value":"5605"},
-{"country_name":"Libya","region_name":"Caribbean","value":"4220"},
-{"country_name":"Saint Lucia","region_name":"Caribbean","value":"17262"},
-{"country_name":"Barbados","region_name":"Caribbean","value":"5764"},
-{"country_name":"Dominican Republic","region_name":"Caribbean","value":"6394"},
-{"country_name":"Honduras","region_name":"Caribbean","value":"11160"},
-{"country_name":"Saint Vincent and the Grenadines","region_name":"Caribbean","value":"15875"},
-{"country_name":"Yemen","region_name":"Caribbean","value":"9984"},
-{"country_name":"Peru","region_name":"Caribbean","value":"9477"},
-{"country_name":"Kenya","region_name":"Caribbean","value":"11564"},
-{"country_name":"Gaza","region_name":"Caribbean","value":"9483"},
-{"country_name":"West Bank","region_name":"Caribbean","value":"20820"},
-{"country_name":"Hong Kong","region_name":"Caribbean","value":"9610"},
-{"country_name":"Brazil","region_name":"Caribbean","value":"27328"},
-{"country_name":"Egypt","region_name":"Caribbean","value":"31581"},
-{"country_name":"Ghana","region_name":"Caribbean","value":"23664"},
-{"country_name":"Qatar","region_name":"Caribbean","value":"29540"},
-{"country_name":"Bermuda","region_name":"Caribbean","value":"13392"},
-{"country_name":"Bahamas","region_name":"Caribbean","value":"18611"},
-{"country_name":"South Africa","region_name":"Caribbean","value":"33098"},
-{"country_name":"Australia","region_name":"Caribbean","value":"15756"},
-{"country_name":"Nigeria","region_name":"Caribbean","value":"33240"},
-{"country_name":"Indonesia","region_name":"Caribbean","value":"39237"},
-{"country_name":"Israel","region_name":"Caribbean","value":"26040"},
-{"country_name":"Iraq","region_name":"Caribbean","value":"25929"},
-{"country_name":"Ecuador","region_name":"Caribbean","value":"29568"},
-{"country_name":"Jamaica","region_name":"Caribbean","value":"36900"},
-{"country_name":"United Kingdom","region_name":"Caribbean","value":"35098"},
-{"country_name":"Kuwait","region_name":"Caribbean","value":"26978"},
-{"country_name":"Saudi Arabia","region_name":"Caribbean","value":"25200"},
-{"country_name":"Chile","region_name":"Caribbean","value":"35231"},
-{"country_name":"Trinidad and Tobago","region_name":"Caribbean","value":"49700"},
-{"country_name":"Singapore","region_name":"Caribbean","value":"36006"},
-{"country_name":"Guyana","region_name":"Caribbean","value":"32396"},
-{"country_name":"Puerto Rico","region_name":"Caribbean","value":"32224"},
-{"country_name":"Mexico","region_name":"Caribbean","value":"38880"},
-{"country_name":"Philippines","region_name":"Caribbean","value":"51480"}
-]
-
-
-function setup() {
-  let c = createCanvas(600, 610);
-  c.parent('container');
-  background(51);
-  frameRate(1);
-}
-
-function draw() {
+let obj = fetch('data_1_group.json?x=' + Math.random()).then(r => r.json()).then(data => {
  
- boxes = [];
- // starts the recursion
- makeBoxes(0, 0, width, height, data, "value");
+  // THIS PROCESS RETURNS A TREE STRUCTURE OBJECT FROM AN [nx3] DIMENSION ARRAY OF OBJECTS 
+  let big_group_desc = "region_name";
+  //let small_group_desc = "country_name";
+  return returnTreeMapObjectFromArrayOfObjects(data, big_group_desc);
 
- background(51);
- for (let i = 0; i < boxes.length; i++) {
-   let b = boxes[i];
-   b.display();
-   b.hovered();
- }
-}
+ }).then(treemap_obj => {
+ 
+  // THIS RETURNS AN ARRAY OF OBJECTS, WHERE EACH OBJECT IS A BOX WITH AN X-Y-W-H
+  return returnArrayOfTreeMapBoxesFromTreemapObject(0, 0, 500, 500, treemap_obj);
 
-function mousePressed(){
- for (let i = 0; i < boxes.length; i++) {
-  if (boxes[i].hover) {
-   console.log(boxes[i]);
-  }
- }
-}
+});
 
 </script>
-
 </html>
