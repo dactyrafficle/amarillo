@@ -1,6 +1,5 @@
 
 
-
 // look at box, is it greater in height than width?
 
 // i wonder if i can make it relative
@@ -26,44 +25,26 @@ function returnArrayOfTreeMapBoxesFromTreemapObject(x, y, w, h, obj) {
    if (a.x_value < b.x_value) {return 1;};
    if (a.x_value === b.x_value) {return 0;};
  });
- 
- //console.log("this is probably the right format"); // an array of objects
- //console.log(arr); // this is the right form for me right now i think
- 
+
  
  makeBoxes(0, 0, 500, 500, arr);
 
  return boxes;
-
-
 
 function makeBoxes(x, y, w, h, arr) {
   
   //console.log("NEW INSTANCE & arr.length : " + arr.length);
 
   if (arr.length > 1) {
-    // SPLIT ARRAY INTO 2 PIECES
-    let sum = getSum(arr,"x_value");
-    let arr1 = [];
-    let sum1 = 0;
-    let arr2 = [];
-    
-    // THE FIRST VALUE GOES IN THE FIRST ARRAY BY DEFAULT
-    arr1.push(arr[0]);
-    sum1 = arr[0].x_value;
-    sum1_pct = sum1 / sum;
-    
-    for (let i = 1; i < arr.length; i++) {
-      if (sum1_pct < 0.35) { // THIS WORKS AS LONG AS THE ARRAY IS SORTED
-        arr1.push(arr[i]);
-        sum1 += arr[i].x_value;
-        sum1_pct = sum1 / sum;
-      } else {
-        arr2.push(arr[i]);
-      } 
-    }
-    //console.log(arr1);
-    //console.log(arr2);
+
+   let arr1 = splitArr(arr, "x_value", 0.35)[0];
+   let arr2 = splitArr(arr, "x_value", 0.35)[1];
+
+   let sum = getSum(arr, "x_value");
+   let sum1 = getSum(arr1, "x_value");
+   let sum2 = getSum(arr2, "x_value");
+   //console.log(arr1);
+   //console.log(arr2);
     
     
     // need to fix the dimensions, and check width x height
@@ -108,50 +89,76 @@ function makeBoxes(x, y, w, h, arr) {
     obj.sw = w;
     obj.sh = h;
     
-    //console.log(obj);
+    console.log(obj);
     boxes.push(obj);
     return obj;
-
     
   }
-  
 
   
 } // closing makeBoxes
 
+
+
 };  // closing the big function
 
+
+
+
+
+// CALCULATE SUM ON THE BASIS OF KEY
 function getSum(arr, key) {
   let sum = 0;
   for (let i = 0; i < arr.length; i++) {
-     sum += arr[i][key];
+    sum += arr[i][key];
   }
   return sum;
 }
 
 
-// maybe i need an array of objects
-/*
+// SPLIT THE ARRAY INTO 2 ARRAYS ON THE BASIS OF THE SUM OF KEY
+// ARR IS AN ARRAY OF OBJECTS
+function splitArr(arr, key, thresh_pct) {
+  
+  // IF THE ARRAY HAS 1 ELEMENT, RETURN THE ARRAY
+  if (arr.length < 2) {
+    return arr;
+  }
+  
+  // SORT THE ARRAY, BIGGEST TO SMALLEST
+  arr.sort(function(a,b) {
+    if (a[key] > b[key]) {return -1;};
+    if (a[key] < b[key]) {return 1;};
+    if (a[key] === b[key]) {return 0;};
+  });
+    
+  let temp = [[],[]];
+  
+  let sum = getSum(arr, key);  
+  let sum0 = 0;
 
-let group = [
- {
-  "name": Asia,
-  "x_count": 50,
-  "x_value":2500,
-  "x_count_parent":4000,
-  "x_value_parent":500000  
-  "subgroups":[
-   
+ // THE FIRST VALUE GOES IN THE FIRST ARRAY BY DEFAULT
+ temp[0].push(arr[0]);
+ sum0 = arr[0][key];
+ sum0_pct = sum0 / sum;
+
+ for (let i = 1; i < arr.length; i++) {
   
-  ]
-  
+  // THE LAST ELEMENT OF ARR ALWAYS GOES TO THE SECOND ARRAY
+  if (sum0_pct < thresh_pct && i !== (arr.length-1)) {
+   temp[0].push(arr[i]);
+   sum0 += arr[i][key];
+   sum0_pct = sum0 / sum;
+  } else {
+   temp[1].push(arr[i]);
+  } 
  }
+
+ return temp;
+}
+
+let test_arr = [
+{'value':50},
+{'value':50}
 ]
 
-// that wya i can:
- sort group
- push into 2 arrays, recursively, then once you're down to 1 group, 
-
- if arr.length > 1 then keep splitting, if arr.length = 1 then make a box
-
-*/
