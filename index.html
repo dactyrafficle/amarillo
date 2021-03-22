@@ -104,14 +104,17 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
 
 function makeBoxes(x, y, w, h, arr) {
 
+let thresh = 0.25;
+
 if (arr.length > 1) {
 
-   let arr1 = splitArr(arr, "value", 0.35)[0];
-   let arr2 = splitArr(arr, "value", 0.35)[1];
+   let arr1 = splitArr(arr, "value", thresh)[0];
+   let arr2 = splitArr(arr, "value", thresh)[1];
 
    let sum = getSum(arr, "value");
    let sum1 = getSum(arr1, "value");
    let sum2 = getSum(arr2, "value");
+   
     
     // need to fix the dimensions, and check width x height
  
@@ -219,27 +222,30 @@ function splitArr(arr, key, thresh_pct) {
   
   // SORT THE ARRAY, BIGGEST TO SMALLEST
   arr.sort(function(a,b) {
-    if (a[key] > b[key]) {return -1;};
-    if (a[key] < b[key]) {return 1;};
-    if (a[key] === b[key]) {return 0;};
+    if (parseInt(a[key]) > parseInt(b[key])) {return -1;};
+    if (parseInt(a[key]) < parseInt(b[key])) {return 1;};
+    if (parseInt(a[key]) === parseInt(b[key])) {return 0;};
   });
     
   let temp = [[],[]];
   
-  let sum = getSum(arr, key);  
+  let sum = getSum(arr, key);
+  console.log(sum);
   let sum0 = 0;
 
  // THE FIRST VALUE GOES IN THE FIRST ARRAY BY DEFAULT
  temp[0].push(arr[0]);
- sum0 = arr[0][key];
+ sum0 = parseInt(arr[0][key]);
  sum0_pct = sum0 / sum;
+ //console.log(sum0_pct);
 
  for (let i = 1; i < arr.length; i++) {
   
   // THE LAST ELEMENT OF ARR ALWAYS GOES TO THE SECOND ARRAY
   if (sum0_pct < thresh_pct && i !== (arr.length-1)) {
+    //console.log(sum0_pct);
    temp[0].push(arr[i]);
-   sum0 += arr[i][key];
+   sum0 += parseInt(arr[i][key]);
    sum0_pct = sum0 / sum;
   } else {
    temp[1].push(arr[i]);
