@@ -10,17 +10,10 @@
  <style>
   .box {
    position: absolute;
-   border: 1px solid #999;
+   border: 1px solid #333;
   }
-  .box:hover {
-  filter: brightness(0.8);
-  }
- .parent:hover {
-  filter: grayscale(80%);
-  border: none;
-  position: block;
 
- }
+
  </style>
  
 </head>
@@ -33,6 +26,9 @@ let boxes = [];
 let hue = 0;
 let n = 0;
 let m;
+
+let big_groups = [];
+
 let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
  
  //console.log(arr);
@@ -51,10 +47,6 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
    div.style.width = boxes[i].sw + 'px';
    div.style.height = boxes[i].sh + 'px';
    
-
-
-
-   
    div.style.backgroundColor = "hsl(" + boxes[i].hue + "," + boxes[i].sat + "%," + boxes[i].lig + "%)";
    div.classList.add(boxes[i].parent);
    div.classList.add(boxes[i].group);
@@ -62,6 +54,7 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
    if (boxes[i].isParent)  {
     div.classList.add("parent");
     div.id = boxes[i].group;
+    big_groups.push(boxes[i].group);
    }
 
    /*
@@ -75,7 +68,36 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
    container.appendChild(div);
    
    
+   
+   
+   
  }
+ 
+ // now the divs are made
+ // easy to do w a bit of js i guess
+ 
+ for (let i = 0; i < big_groups.length; i++) {
+ let divs = document.getElementsByClassName(big_groups[i]);
+
+ 
+ for (let j = 0; j < divs.length; j++) {
+ 
+   divs[j].addEventListener('mouseover', function() {
+   
+    for (let y = 0; y < divs.length; y++) {
+      divs[y].style.filter = "brightness(0.8)";
+    }
+    this.style.filter = "brightness(0.7)";
+   });
+   divs[j].addEventListener('mouseleave', function() {
+    for (let y = 0; y < divs.length; y++) {
+      divs[y].style.filter = "none";
+    }
+   });
+ }
+ 
+}
+ 
  
 });
 
@@ -226,6 +248,9 @@ function splitArr(arr, key, thresh_pct) {
 
  return temp;
 }
+
+
+
 
 
 
