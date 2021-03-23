@@ -14,3 +14,10 @@ need to store all the returns of makeBoxes and its recursive children
 
 and improve SPLIT -> maybe 1. random split ie. n/2 elements per list
 or what im using now, n_ where value > some percentage in one box, else in next box
+
+
+2021-03-22
+I think i know how I want the input data to be
+[{"group":group,"value":value,"subgroups":[]}]
+
+where subgroups are optional
