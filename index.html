@@ -8,17 +8,25 @@
 
 
  <style>
+  html, body {
+   font-family: calibri;
+  }
   .box {
    position: absolute;
    border: 1px solid #333;
   }
-
-
+  #infobox {
+   position: absolute;
+   left: 75vh;
+  }
  </style>
  
 </head>
 
-<div id='container'></div>
+
+<div class='cell' id='container'></div>
+<div class='cell' id='infobox'></div>
+
 
 <script>
 
@@ -34,18 +42,21 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
  //console.log(arr);
  
  m = arr[0].subgroups.length;
- makeBoxes(0, 0, 700, 700, arr); // data is an array that contains only 1 object
+ makeBoxes(0, 0, 70, 70, arr); // data is an array that contains only 1 object
  
  let container = document.getElementById('container');
+ let infobox = document.getElementById('infobox');
+ 
+ let scale = 1;
  
  for (let i = 0; i < boxes.length; i++) {
  
    let div = document.createElement('div');
    div.classList.add('box');
-   div.style.top = boxes[i].py + 'px';
-   div.style.left = boxes[i].px + 'px';
-   div.style.width = boxes[i].sw + 'px';
-   div.style.height = boxes[i].sh + 'px';
+   div.style.top = boxes[i].py*scale + 'vh';
+   div.style.left = boxes[i].px*scale + 'vh';
+   div.style.width = boxes[i].sw*scale + 'vh';
+   div.style.height = boxes[i].sh*scale + 'vh';
    
    div.style.backgroundColor = "hsl(" + boxes[i].hue + "," + boxes[i].sat + "%," + boxes[i].lig + "%)";
    div.classList.add(boxes[i].parent);
@@ -56,6 +67,15 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
     div.id = boxes[i].group;
     big_groups.push(boxes[i].group);
    }
+   
+   div.addEventListener('mouseover', function() {
+     console.log(boxes[i]);
+     infobox.innerHTML = '<h4> Y1 to Y2 </h4>';
+     infobox.innerHTML += '<p> parent : ' + boxes[i].parent + '</p>';
+     infobox.innerHTML += '<p> group : ' + boxes[i].group + '</p>';
+     infobox.innerHTML += '<p> value : ' + boxes[i].value + '</p>';
+   })
+   
 
    /*
    if (boxes[i].parent) {
@@ -104,7 +124,7 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
 
 function makeBoxes(x, y, w, h, arr) {
 
-let thresh = 0.25;
+let thresh = 0.2;
 
 if (arr.length > 1) {
 
@@ -230,7 +250,7 @@ function splitArr(arr, key, thresh_pct) {
   let temp = [[],[]];
   
   let sum = getSum(arr, key);
-  console.log(sum);
+  //console.log(sum);
   let sum0 = 0;
 
  // THE FIRST VALUE GOES IN THE FIRST ARRAY BY DEFAULT
