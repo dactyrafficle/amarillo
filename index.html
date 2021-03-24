@@ -27,10 +27,10 @@
 <div class='cell' id='container'></div>
 <div class='cell' id='infobox'></div>
 
+<script src='amarillo.js'></script>
 
 <script>
 
-let boxes = [];
 let hue = 0;
 let n = 0;
 let m;
@@ -38,11 +38,9 @@ let m;
 let big_groups = [];
 
 let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
- 
- //console.log(arr);
- 
+
  m = arr[0].subgroups.length;
- makeBoxes(0, 0, 70, 70, arr); // data is an array that contains only 1 object
+ boxes = makeBoxes(0, 0, 70, 70, arr);
  
  let container = document.getElementById('container');
  let infobox = document.getElementById('infobox');
@@ -77,14 +75,6 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
    })
    
 
-   /*
-   if (boxes[i].parent) {
-     let parent = document.getElementById(boxes[i].parent);
-     parent.appendChild(div);
-   } else {
-    container.appendChild(div);
-   }
-   */
    container.appendChild(div);
    
    
@@ -120,164 +110,6 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
  
  
 });
-
-
-function makeBoxes(x, y, w, h, arr) {
-
-let thresh = 0.2;
-
-if (arr.length > 1) {
-
-   let arr1 = splitArr(arr, "value", thresh)[0];
-   let arr2 = splitArr(arr, "value", thresh)[1];
-
-   let sum = getSum(arr, "value");
-   let sum1 = getSum(arr1, "value");
-   let sum2 = getSum(arr2, "value");
-   
-    
-    // need to fix the dimensions, and check width x height
- 
-    let x1, x2, y1, y2;
-    let w1, w2, h1, h2;
-    
-    if (w > h) {
-      // DRAW THE BOXES HORIZONTALLY
-      x1 = x;      
-      x2 = x1 + (sum1/sum)*w;
-      y1 = y;
-      y2 = y;
-      w1 = (sum1/sum)*w;
-      w2 = w-w1;
-      h1 = h;
-      h2 = h;
-      
-    } else { // HEIGHT AND WIDTH ARE EQUAL OR HEIGHT IS GREATER
-      // DRAW THE BOXES VERTICALLY
-      x1 = x;      
-      x2 = x;
-      y1 = y;
-      y2 = y1+(sum1/sum)*h;
-      w1 = w;
-      w2 = w;
-      h1 = (sum1/sum)*h;
-      h2 = h-h1;  
-      
-    }
-
-    
-    makeBoxes(x1, y1, w1, h1, arr1);
-    makeBoxes(x2, y2, w2, h2, arr2);
-    
-  } else {
-    // IF ARR.LENGTH IS 1 OR 2, THEN WE CAN ACTUALLY MAKE THE BOXES
-    
-    //console.log(arr[0]);
-    let obj = arr[0];
-    
-    obj.px = x;
-    obj.py = y;
-    obj.sw = w;
-    obj.sh = h;
-    
-    
-    // CREATE A PARENT BOX TOO
-    
-    
-    boxes.push(obj);
-    
-    
-    if (obj.subgroups) {
-      //obj.id = obj.group;
-      // if it is a parent
-      obj.isParent = true;
-    
-      n = n + 1;
-      //console.log(n);
-      hue = 360/(m+2)*n;
-      // console.log(arr.length);
-      //console.log(hue);
-      for (let i = 0; i < obj.subgroups.length; i++) {
-        obj.subgroups[i].hue = hue +10*(Math.random()-Math.random());
-        obj.subgroups[i].sat = (Math.random()-Math.random())*10+90;
-        obj.subgroups[i].lig = (Math.random()-Math.random())*10+70;
-        obj.subgroups[i].parent = obj.group;
-        obj.isChild = true;
-      }
-    
-      
-      makeBoxes(x, y, w, h, obj.subgroups);
-    } else {
-     
-
-     boxes.push(obj);
-    }
-
-
-  }
-
-
-
-} // close make boxes
-
-
-// CALCULATE SUM ON THE BASIS OF KEY
-function getSum(arr, key) {
-  let sum = 0;
-  for (let i = 0; i < arr.length; i++) {
-    sum += parseInt(arr[i][key]);
-  }
-  return sum;
-}
-
-
-// SPLIT THE ARRAY INTO 2 ARRAYS ON THE BASIS OF THE SUM OF KEY
-// ARR IS AN ARRAY OF OBJECTS
-function splitArr(arr, key, thresh_pct) {
-  
-  // IF THE ARRAY HAS 1 ELEMENT, RETURN THE ARRAY
-  if (arr.length < 2) {
-    return arr;
-  }
-  
-  // SORT THE ARRAY, BIGGEST TO SMALLEST
-  arr.sort(function(a,b) {
-    if (parseInt(a[key]) > parseInt(b[key])) {return -1;};
-    if (parseInt(a[key]) < parseInt(b[key])) {return 1;};
-    if (parseInt(a[key]) === parseInt(b[key])) {return 0;};
-  });
-    
-  let temp = [[],[]];
-  
-  let sum = getSum(arr, key);
-  //console.log(sum);
-  let sum0 = 0;
-
- // THE FIRST VALUE GOES IN THE FIRST ARRAY BY DEFAULT
- temp[0].push(arr[0]);
- sum0 = parseInt(arr[0][key]);
- sum0_pct = sum0 / sum;
- //console.log(sum0_pct);
-
- for (let i = 1; i < arr.length; i++) {
-  
-  // THE LAST ELEMENT OF ARR ALWAYS GOES TO THE SECOND ARRAY
-  if (sum0_pct < thresh_pct && i !== (arr.length-1)) {
-    //console.log(sum0_pct);
-   temp[0].push(arr[i]);
-   sum0 += parseInt(arr[i][key]);
-   sum0_pct = sum0 / sum;
-  } else {
-   temp[1].push(arr[i]);
-  } 
- }
-
- return temp;
-}
-
-
-
-
 
 
 
