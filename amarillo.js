@@ -55,6 +55,8 @@ function makeBoxes(x, y, w, h, arr) {
    
    // CREATE A PARENT BOX TOO
    output.push(obj);
+   
+   // IF THE OBJECT HAS CHILDREN, ADD THE CHILDREN
    return output.concat(makeBoxes(x, y, w, h, obj.subgroups));
   } else {
   
