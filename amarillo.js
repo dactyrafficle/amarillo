@@ -38,9 +38,6 @@ function makeBoxes(x, y, w, h, arr) {
   obj.sw = w;
   obj.sh = h;
     
-  // CREATE A PARENT BOX TOO
-  arr.push(obj);
-    
   // IF THE OBJECT HAS SUBGROUPS
   if (obj.subgroups) {
 
@@ -56,7 +53,9 @@ function makeBoxes(x, y, w, h, arr) {
     obj.isChild = true;
    }
    
-   return arr.concat(makeBoxes(x, y, w, h, obj.subgroups));
+   // CREATE A PARENT BOX TOO
+   output.push(obj);
+   return output.concat(makeBoxes(x, y, w, h, obj.subgroups));
   } else {
   
    return output.concat(obj);     
