@@ -1,16 +1,15 @@
 
-function makeBoxes(x, y, w, h, arr) {
+function makeBoxes(x, y, w, h, arr, key) {
 
  let thresh = 0.2;
-
  let output = [];
 
  if (arr.length > 1) {
 
   // SPLIT THE ARRAY INTO 2
-  let arr2 = splitArr(arr, "value", thresh);
-  let sum = getSum(arr, "value");
-  let sum0 = getSum(arr2[0], "value");
+  let arr2 = splitArr(arr, key, thresh);
+  let sum = getSum(arr, key);
+  let sum0 = getSum(arr2[0], key);
 
   // DIMENSION OF BOXES
   let dw = 0;
@@ -27,7 +26,7 @@ function makeBoxes(x, y, w, h, arr) {
   let h2 = dw*h + dh*(h-h1);
 
   // THIS WAS NOT THAT EASY TO FIGURE OUT
-  return output.concat(makeBoxes(x1, y1, w1, h1, arr2[0]), makeBoxes(x2, y2, w2, h2, arr2[1]));
+  return output.concat(makeBoxes(x1, y1, w1, h1, arr2[0], key), makeBoxes(x2, y2, w2, h2, arr2[1], key));
     
  } else {
  // IF ARR.LENGTH IS 1 OR 2, THEN WE CAN ACTUALLY MAKE THE BOXES
@@ -37,9 +36,13 @@ function makeBoxes(x, y, w, h, arr) {
   obj.py = y;
   obj.sw = w;
   obj.sh = h;
-    
+  
+  obj.level_parent = (obj.level > 0) ? (obj.level-1) : obj.level;
+  
   // IF THE OBJECT HAS SUBGROUPS
   if (obj.subgroups) {
+    
+
 
    obj.isParent = true;
    n = n + 1;
@@ -53,11 +56,8 @@ function makeBoxes(x, y, w, h, arr) {
     obj.isChild = true;
    }
    
-   // CREATE A PARENT BOX TOO
-   output.push(obj);
-   
-   // IF THE OBJECT HAS CHILDREN, ADD THE CHILDREN
-   return output.concat(makeBoxes(x, y, w, h, obj.subgroups));
+   // IF THE OBJECT HAS CHILDREN, ADD THE BOX AND ITS CHILDREN
+   return output.concat(obj, makeBoxes(x, y, w, h, obj.subgroups, key));
   } else {
   
    return output.concat(obj);     

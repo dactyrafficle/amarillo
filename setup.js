@@ -8,7 +8,8 @@ let big_groups = [];
 let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
 
  m = arr[0].subgroups.length;
- boxes = makeBoxes(0, 0, 70, 70, arr);
+ 
+ boxes = makeBoxes(0, 0, 70, 70, arr, "value");
  
  let container = document.getElementById('container');
  let infobox = document.getElementById('infobox');
