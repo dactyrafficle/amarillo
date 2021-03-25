@@ -5,11 +5,13 @@ let m;
 
 let big_groups = [];
 
+
 let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
 
  m = arr[0].subgroups.length;
  
- boxes = makeBoxes(0, 0, 100, 100, arr, "value");
+ let key = "value";
+ boxes = makeBoxes(0, 0, 100, 100, arr, key);
  
  let container = document.getElementById('container');
  let infobox = document.getElementById('infobox');
@@ -21,8 +23,11 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
   let obj = boxes[i];
   let div = document.createElement('div');
   div.classList.add('box');
-  div.classList.add(obj.parent);
+  if (obj.parent) {
+   div.classList.add(obj.parent);
+  }
   div.classList.add(obj.group);
+  div.classList.add("level-" + obj.level);
   
   div.style.top = obj.py*scale + '%';
   div.style.left = obj.px*scale + '%';
@@ -38,11 +43,11 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
    }
    
    div.addEventListener('mouseover', function() {
-     console.log(boxes[i]);
+     //console.log(boxes[i]);
      infobox.innerHTML = '<h4> Y1 to Y2 </h4>';
      infobox.innerHTML += '<p> parent : ' + boxes[i].parent + '</p>';
      infobox.innerHTML += '<p> group : ' + boxes[i].group + '</p>';
-     infobox.innerHTML += '<p> value : ' + boxes[i].value + '</p>';
+     infobox.innerHTML += '<p> value : ' + boxes[i][key] + '</p>';
    })
    
 
@@ -53,9 +58,6 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
    
    
  }
- 
- // now the divs are made
- // easy to do w a bit of js i guess
  
  for (let i = 0; i < big_groups.length; i++) {
  let divs = document.getElementsByClassName(big_groups[i]);
@@ -78,6 +80,7 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
  }
  
 }
+
  
  
 });
