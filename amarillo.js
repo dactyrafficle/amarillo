@@ -1,4 +1,6 @@
 
+// 2021-03-24 LETS TRY ONLY MAKING THE SUBBOXES
+
 function makeBoxes(x, y, w, h, arr, key) {
 
  let thresh = 0.2;
@@ -37,11 +39,17 @@ function makeBoxes(x, y, w, h, arr, key) {
   obj.sw = w;
   obj.sh = h;
   
-  obj.level_parent = (obj.level > 0) ? (obj.level-1) : obj.level;
+  if (obj.level === 1) {
+   obj.level_1 = obj.group;
+  }
+  //console.log(obj.group + " : " + obj.level_1);
+
+  //obj.level_parent = (obj.level > 0) ? (obj.level-1) : obj.level;
   
   // IF THE OBJECT HAS SUBGROUPS
   if (obj.subgroups) {
     
+   
 
 
    obj.isParent = true;
@@ -49,6 +57,7 @@ function makeBoxes(x, y, w, h, arr, key) {
    hue = 360/(m+2)*n;
 
    for (let i = 0; i < obj.subgroups.length; i++) {
+    obj.subgroups[i].level_1 = obj.level_1;
     obj.subgroups[i].hue = hue +10*(Math.random()-Math.random());
     obj.subgroups[i].sat = (Math.random()-Math.random())*10+90;
     obj.subgroups[i].lig = (Math.random()-Math.random())*10+70;
@@ -57,7 +66,8 @@ function makeBoxes(x, y, w, h, arr, key) {
    }
    
    // IF THE OBJECT HAS CHILDREN, ADD THE BOX AND ITS CHILDREN
-   return output.concat(obj, makeBoxes(x, y, w, h, obj.subgroups, key));
+   //return output.concat(obj, makeBoxes(x, y, w, h, obj.subgroups, key));
+   return output.concat(makeBoxes(x, y, w, h, obj.subgroups, key));
   } else {
   
    return output.concat(obj);     
