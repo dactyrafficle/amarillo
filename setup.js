@@ -9,7 +9,7 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
 
  m = arr[0].subgroups.length;
  
- boxes = makeBoxes(0, 0, 70, 70, arr, "value");
+ boxes = makeBoxes(0, 0, 100, 100, arr, "value");
  
  let container = document.getElementById('container');
  let infobox = document.getElementById('infobox');
@@ -24,10 +24,11 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
   div.classList.add(obj.parent);
   div.classList.add(obj.group);
   
-  div.style.top = obj.py*scale + 'vh';
-  div.style.left = obj.px*scale + 'vh';
-  div.style.width = obj.sw*scale + 'vh';
-  div.style.height = obj.sh*scale + 'vh'; 
+  div.style.top = obj.py*scale + '%';
+  div.style.left = obj.px*scale + '%';
+  div.style.width = obj.sw*scale + '%';
+  div.style.height = obj.sh*scale + '%'; 
+  div.innerHTML = obj.group;
   div.style.backgroundColor = "hsl(" + boxes[i].hue + "," + boxes[i].sat + "%," + boxes[i].lig + "%)";
 
    if (obj.isParent)  {
