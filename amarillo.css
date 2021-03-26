@@ -27,12 +27,16 @@
   }
   .box {
    position: absolute;
-   border: 1px solid #333;
+   border: 3px solid #fff;
+   filter: brightness(1.3);
+  }
+  .box:hover {
+   cursor: pointer;
   }
   #container {
    position: relative;
-   width: 60vw;
-   height: 60vh;
+   width: 70vh;
+   height: 70vh;
   }
   #infobox {
    width: 30vw;

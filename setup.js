@@ -42,16 +42,16 @@ let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => 
      
      let subgroups = document.getElementsByClassName(obj.level_1);
      for (let i = 0; i < subgroups.length; i++) {
-       subgroups[i].style.filter = 'brightness(0.9)';
+       subgroups[i].style.filter = 'brightness(1.1)';
      }
-     div.style.filter = 'brightness(0.8)';
+     div.style.filter = 'brightness(1.0)';
      
    })
    div.addEventListener('mouseleave', function() {
-     div.style.filter = 'none';
+     div.style.filter = 'brightness(1.3)';
      let subgroups = document.getElementsByClassName(obj.level_1);
      for (let i = 0; i < subgroups.length; i++) {
-       subgroups[i].style.filter = 'none';
+       subgroups[i].style.filter = 'brightness(1.3)';
      }
    })
 

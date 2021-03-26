@@ -42,16 +42,10 @@ function makeBoxes(x, y, w, h, arr, key) {
   if (obj.level === 1) {
    obj.level_1 = obj.group;
   }
-  //console.log(obj.group + " : " + obj.level_1);
 
-  //obj.level_parent = (obj.level > 0) ? (obj.level-1) : obj.level;
-  
   // IF THE OBJECT HAS SUBGROUPS
   if (obj.subgroups) {
     
-   
-
-
    obj.isParent = true;
    n = n + 1;
    hue = 360/(m+2)*n;
@@ -59,8 +53,8 @@ function makeBoxes(x, y, w, h, arr, key) {
    for (let i = 0; i < obj.subgroups.length; i++) {
     obj.subgroups[i].level_1 = obj.level_1;
     obj.subgroups[i].hue = hue +10*(Math.random()-Math.random());
-    obj.subgroups[i].sat = (Math.random()-Math.random())*10+90;
-    obj.subgroups[i].lig = (Math.random()-Math.random())*10+70;
+    obj.subgroups[i].sat = (Math.random()-Math.random())*10+70;
+    obj.subgroups[i].lig = (Math.random()-Math.random())*10+42;
     obj.subgroups[i].parent = obj.group;
     obj.isChild = true;
    }
