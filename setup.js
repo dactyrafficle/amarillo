@@ -1,11 +1,5 @@
 
-let hue = 0;
-let n = 0;
-let m;
-
 let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
-
- m = arr[0].subgroups.length;
  
  let key = "value";
  boxes = makeBoxes(0, 0, 100, 100, arr, key);

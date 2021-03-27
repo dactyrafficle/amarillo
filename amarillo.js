@@ -41,20 +41,21 @@ function makeBoxes(x, y, w, h, arr, key) {
   
   if (obj.level === 1) {
    obj.level_1 = obj.group;
+   obj.hue = 215; //Math.random()*360;;
+   obj.sat = Math.random()*5 + 50;
+   obj.lig = Math.random()*20 + 50;
   }
 
   // IF THE OBJECT HAS SUBGROUPS
   if (obj.subgroups) {
     
    obj.isParent = true;
-   n = n + 1;
-   hue = 360/(m+2)*n;
 
    for (let i = 0; i < obj.subgroups.length; i++) {
     obj.subgroups[i].level_1 = obj.level_1;
-    obj.subgroups[i].hue = hue +10*(Math.random()-Math.random());
-    obj.subgroups[i].sat = (Math.random()-Math.random())*10+70;
-    obj.subgroups[i].lig = (Math.random()-Math.random())*10+42;
+    obj.subgroups[i].hue = obj.hue;
+    obj.subgroups[i].sat = obj.sat;
+    obj.subgroups[i].lig = obj.lig; //(Math.random()-Math.random())*10+42;
     obj.subgroups[i].parent = obj.group;
     obj.isChild = true;
    }
