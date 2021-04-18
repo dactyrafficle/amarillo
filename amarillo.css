@@ -34,9 +34,8 @@
    cursor: pointer;
   }
   #container {
-   position: relative;
-   width: 70vh;
-   height: 70vh;
+
+
   }
   #infobox {
    width: 30vw;

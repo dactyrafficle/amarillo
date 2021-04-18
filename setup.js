@@ -1,56 +1,24 @@
 
-let obj = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
- 
- let key = "value";
- boxes = makeBoxes(0, 0, 100, 100, arr, key);
- 
- let container = document.getElementById('container');
- let infobox = document.getElementById('infobox');
- 
- let scale = 1;
- 
- for (let i = 0; i < boxes.length; i++) {
 
-  let obj = boxes[i];
-  let div = document.createElement('div');
-  div.classList.add('box');
+
+let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
   
-  div.classList.add(obj.level_1);
-  div.classList.add('group-' + obj.group);
-  div.classList.add("level-" + obj.level);
+  let x = arrOfObj2PivotPartA(arr, 'val', 'cat1', 'cat2', 'cat3', 'cat4');
+  let y = arrOfObj2PivotPartB(x);
+  let z = createBoxObjects(0, 0, 100, 100, y.children); // remove the first 4 arguments
+  let b = createBoxElementsObject(z, 700, 'px');
   
-  div.style.top = obj.py*scale + '%';
-  div.style.left = obj.px*scale + '%';
-  div.style.width = obj.sw*scale + '%';
-  div.style.height = obj.sh*scale + '%'; 
-  div.innerHTML = obj.group;
-  div.style.backgroundColor = "hsl(" + boxes[i].hue + "," + boxes[i].sat + "%," + boxes[i].lig + "%)";
+  console.log(b);
 
-  div.id = obj.group;
-   
-   div.addEventListener('mouseover', function() {
-     infobox.innerHTML = '<h4> Y1 to Y2 </h4>';
-     infobox.innerHTML += '<p> parent : ' + obj.level_1 + '</p>';
-     infobox.innerHTML += '<p> group : ' + obj.group + '</p>';
-     infobox.innerHTML += '<p> value : ' + obj[key] + '</p>';
-     
-     let subgroups = document.getElementsByClassName(obj.level_1);
-     for (let i = 0; i < subgroups.length; i++) {
-       subgroups[i].style.filter = 'brightness(1.1)';
-     }
-     div.style.filter = 'brightness(1.0)';
-     
-   })
-   div.addEventListener('mouseleave', function() {
-     div.style.filter = 'brightness(1.3)';
-     let subgroups = document.getElementsByClassName(obj.level_1);
-     for (let i = 0; i < subgroups.length; i++) {
-       subgroups[i].style.filter = 'brightness(1.3)';
-     }
-   })
-
-   container.appendChild(div);
-
- }
- 
+  let boxesContainer = document.getElementById('container');
+  boxesContainer.appendChild(b.boxes);
+  
 });
+
+
+
+
+
+
+
+
