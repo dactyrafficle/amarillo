@@ -24,10 +24,10 @@ function addEventListnersAndCreateInfoBox(b) {
   div.id = 'hank';
   
   for (let i = 0; i < b.boxes.length; i++) {
-    console.log(b.boxes[i].obj);
+    //console.log(b.boxes[i].obj);
     let el = b.boxes[i].el;
-    el.addEventListener('click', function() {
-      console.log(this);
+    el.addEventListener('mouseover', function() {
+      //console.log(this);
       div.innerHTML = '';
       
       for (let y = 0; y < b.boxes[i].obj.ancestors.length; y++) {
