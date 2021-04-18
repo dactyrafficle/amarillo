@@ -29,8 +29,11 @@ function addEventListnersAndCreateInfoBox(b) {
     el.addEventListener('click', function() {
       console.log(this);
       div.innerHTML = '';
-      div.innerHTML += '<p> PARENT: ' + b.boxes[i].obj.parent + '</p>';
-      div.innerHTML += '<p> NAME: ' + b.boxes[i].obj.name + '</p>';
+      
+      for (let y = 0; y < b.boxes[i].obj.ancestors.length; y++) {
+        div.innerHTML += '<p> LEVEL ' + y + ': ' + b.boxes[i].obj.ancestors[y] + '</p>';
+      }
+      div.innerHTML += '<p> LEVEL ' + b.boxes[i].obj.ancestors.length + ': ' + b.boxes[i].obj.name + '</p>';
       div.innerHTML += '<p> VALUE: ' + b.boxes[i].obj.value + '</p>';
     });
     
