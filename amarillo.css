@@ -25,18 +25,7 @@
   .inner {
    display: inline-block;
   }
-  .box {
-   position: absolute;
-   border: 3px solid #fff;
-   filter: brightness(1.3);
-  }
-  .box:hover {
-   cursor: pointer;
-  }
-  #container {
 
-
-  }
   #infobox {
    width: 30vw;
   }
