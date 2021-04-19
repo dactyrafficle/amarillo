@@ -1,7 +1,12 @@
-# amarillo
+# treemapping
 treemapping!
 
-https://dactyrafficle.github.io/amarillo/
+https://dactyrafficle.github.io/treemapping/
+
+in setup.js:
+ change the data source inside fetch()
+ change the value to sum by
+ change the elements inside the categories array
 
 
 makeBoxes
