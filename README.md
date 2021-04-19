@@ -3,10 +3,14 @@ treemapping!
 
 https://dactyrafficle.github.io/treemapping/
 
+** fix aggro -> pivotObj function
+** choose a better boxing algo
+
 in setup.js:
- change the data source inside fetch()
- change the value to sum by
- change the elements inside the categories array
+* change the data source inside fetch()
+* change the value to sum by
+* change the elements inside the categories array
+
 
 
 makeBoxes
