@@ -8,15 +8,14 @@ THERE ARE 3 FUNDAMENTAL DATA STRUCTURES HERE
 
 */
 
-let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
+let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(xObjArr => {
   
   let xAggro = 'value';
-  let categories = ['region_name','country_name','spend_type'];
-  
-  // so far so good
-  let x = aggro(arr, categories, xAggro);
-  SUBGROUPS2ARRAY(x);
-  console.log(x);
+  let xKeys = ['region_name','country_name','spend_type'];
+  let x = aggro(xObjArr, xKeys, xAggro);
+  x.SUBGROUPS2ARRAY();
+
+  // console.log(x);
   
   // because aggro will define what the value is called, it shouldn't be a variable
   
@@ -30,15 +29,15 @@ let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr =>
   
   // CLEAR THE CONTAINERS
   document.getElementById('container').innerHTML = '';
-  //document.getElementById('infobox').innerHTML = '';
+  document.getElementById('infobox').innerHTML = '';
   
   // DRAW THE BOXES
   document.getElementById('container').appendChild(drawBoxes(b));
-  //document.getElementById('infobox').appendChild(addEventListnersAndCreateInfoBox(b)); 
+  document.getElementById('infobox').appendChild(addEventListnersAndCreateInfoBox(b)); 
   
   
   // LIST ALL THE CATEGORIES
-  Object.keys(arr[0]).forEach(function(a, b, c) {
+  Object.keys(xObjArr[0]).forEach(function(a, b, c) {
     let p = document.createElement('p');
     p.innerHTML = a;
     document.getElementById('variable-list-all').appendChild(p);  
@@ -46,41 +45,37 @@ let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr =>
 });
 
 
-function SUBGROUPS2ARRAY(obj) {
- 
- if (obj.subgroups) {
- 
-  obj.subgroups = Object.values(obj.subgroups);
-  
-  for (let i = 0; i < obj.subgroups.length; i++) {
-   SUBGROUPS2ARRAY(obj.subgroups[i]);
+Object.prototype.SUBGROUPS2ARRAY = function() {
+ if (this.subgroups) {
+  this.subgroups = Object.values(this.subgroups);
+  for (let i = 0; i < this.subgroups.length; i++) {
+   this.subgroups[i].SUBGROUPS2ARRAY();
   }
- 
  }
- 
 }
 
-function aggro(arr, categories, xAggro) {
-
+// xObjArr is the source array of anon objects
+// xKeys = ['region','country','city']
+// xValues = ['Europe','France','Paris']
+function aggro(xObjArr, xKeys, xAggro) {
  let obj = {};
- for (let y = 0; y < arr.length; y++) {
-
-  let arr2 = [];
-  for (let i = 0; i < categories.length; i++) {
-   arr2.push(arr[y][categories[i]]);
+ for (let y = 0; y < xObjArr.length; y++) {
+  let xValues = [];
+  for (let i = 0; i < xKeys.length; i++) {
+   xValues.push(xObjArr[y][xKeys[i]]);
   }
-  let val = parseFloat(arr[y][xAggro]);
-
-  aggregate_constructively(obj, arr2, val, 0);
+  let categories = Object.values(xObjArr[y]);
+  let val = parseFloat(xObjArr[y][xAggro]);
+  aggregate_constructively(obj, xValues, val, 0);
  }
  return obj;
 }
 
 
 // I THINK OF IT LIKE 2 WAVES DOING CONSTRUCTIVE INTERFERENCE
-// ARR IS JUST AN ARRAY WHICH MAPS THE ANCESTRY
+// xValues IS JUST AN ARRAY WHICH MAPS THE ANCESTRY like ['Europe','France','Paris']
 // VAL STAYS THE SAME THRU EACH NODE, GETTING ADDED ALONG THE WAY
-function aggregate_constructively(obj, arr, val, level) {
+function aggregate_constructively(obj, xValues, val, level) {
 
  // IS BETTER WITH SUBGROUPS
  if (!obj.subgroups) {
@@ -92,19 +87,22 @@ function aggregate_constructively(obj, arr, val, level) {
   obj.val = (obj.val + val || val);
   obj.name = "ROOT";
   obj.level = level;
+  obj.lineage = ["ROOT"];
  }
 
- if (!obj.subgroups[arr[0]]) {
-  obj.subgroups[arr[0]] = {};
-  obj.subgroups[arr[0]].val = val;
-  obj.subgroups[arr[0]].name = arr[0];
-  obj.subgroups[arr[0]].level = level;
+ if (!obj.subgroups[xValues[0]]) {
+  obj.subgroups[xValues[0]] = {};
+  obj.subgroups[xValues[0]].val = val;
+  obj.subgroups[xValues[0]].name = xValues[0].toUpperCase();
+  obj.subgroups[xValues[0]].level = level+1;
+  obj.subgroups[xValues[0]].lineage = obj.lineage.slice(0); // make a copy of its parents lineage
+  obj.subgroups[xValues[0]].lineage.push(xValues[0].toUpperCase());
  } else {
-  obj.subgroups[arr[0]].val += val;
+  obj.subgroups[xValues[0]].val += val;
  }
 
- if (arr.length > 1) {
-  aggregate_constructively(obj.subgroups[arr[0]], arr.slice(1), val, level + 1);
+ if (xValues.length > 1) {
+  aggregate_constructively(obj.subgroups[xValues[0]], xValues.slice(1), val, level + 1);
  }
 }
 
@@ -145,7 +143,7 @@ function createBoxObjects(x, y, w, h, arr) {
     
  } else {
     
-    console.log(arr[0]);
+    //console.log(arr[0]);
    // IF ARR.LENGTH === 1, THEN WE MIGHT BE ABLE TO MAKE BOXES
    let obj = Object.assign({},arr[0]); // ES6 correct
    obj.px = x;
@@ -285,4 +283,28 @@ function createArrOfBoxElementObjects(arr, s, s_unit) {
     'height': Math.sqrt(A)
   }
   */
+}
+
+function addEventListnersAndCreateInfoBox(b) {
+  let div = document.createElement('div');
+  div.id = 'hank';
+  
+  for (let i = 0; i < b.boxes.length; i++) {
+    //console.log(b.boxes[i].obj);
+    let el = b.boxes[i].el;
+    el.addEventListener('mouseover', function() {
+      //console.log(this);
+      div.innerHTML = '';
+      
+      for (let y = 0; y < b.boxes[i].obj.lineage.length; y++) {
+        div.innerHTML += '<p> LEVEL ' + y + ': ' + b.boxes[i].obj.lineage[y] + '</p>';
+      }
+      //div.innerHTML += '<p> LEVEL ' + b.boxes[i].obj.lineage.length + ': ' + b.boxes[i].obj.name + '</p>';
+      div.innerHTML += '<p> VALUE: ' + b.boxes[i].obj.val + '</p>';
+    });
+    
+  }
+  
+  
+  return div;
 }
