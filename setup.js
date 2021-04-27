@@ -1,5 +1,12 @@
 
+/* 
 
+THERE ARE 3 FUNDAMENTAL DATA STRUCTURES HERE
+ 1. arr : the initial array of anon objects
+ 2. categories : the array which contains the object keys
+ 3. xAggro : the object key by which we are aggregating the data
+
+*/
 
 let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr => {
   
@@ -19,6 +26,7 @@ let data = fetch('data.json?x=' + Math.random()).then(r => r.json()).then(arr =>
   
   // CREATE THE BOXES AND THE OBJECTS THAT DEFINE THEM
   let b = createArrOfBoxElementObjects(y, 700, 'px'); // good
+  
   
   // CLEAR THE CONTAINERS
   document.getElementById('container').innerHTML = '';
@@ -73,22 +81,24 @@ function aggro(arr, categories, xAggro) {
 // ARR IS JUST AN ARRAY WHICH MAPS THE ANCESTRY
 // VAL STAYS THE SAME THRU EACH NODE, GETTING ADDED ALONG THE WAY
 function aggregate_constructively(obj, arr, val, level) {
- 
+
  // IS BETTER WITH SUBGROUPS
  if (!obj.subgroups) {
   obj.subgroups = {};
-  obj.level = level;
+  
  }
  
  if (level === 0) {
   obj.val = (obj.val + val || val);
   obj.name = "ROOT";
+  obj.level = level;
  }
 
  if (!obj.subgroups[arr[0]]) {
   obj.subgroups[arr[0]] = {};
   obj.subgroups[arr[0]].val = val;
   obj.subgroups[arr[0]].name = arr[0];
+  obj.subgroups[arr[0]].level = level;
  } else {
   obj.subgroups[arr[0]].val += val;
  }
@@ -135,8 +145,9 @@ function createBoxObjects(x, y, w, h, arr) {
     
  } else {
     
+    console.log(arr[0]);
    // IF ARR.LENGTH === 1, THEN WE MIGHT BE ABLE TO MAKE BOXES
-   let obj = arr[0]; // correct
+   let obj = Object.assign({},arr[0]); // ES6 correct
    obj.px = x;
    obj.py = y;
    obj.sw = w;
