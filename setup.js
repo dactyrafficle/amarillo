@@ -239,11 +239,16 @@ function createArrOfBoxElementObjects(arr, s, s_unit) {
   let A = 0;
 
   for (let i = 0; i < arr.length; i++) {
-    let obj = arr[i];
+    let obj = Object.assign({},arr[i]);
     let box = document.createElement('div');
     box.classList.add('box');
     box.style.position = 'absolute';
     box.style.border = '1px solid #999';
+    
+    
+    obj.lineage.forEach(function(a,b,c) {
+      box.classList.add(a.replace(/ /gi,'_'));
+    });
     
     box.style.top = (obj.py)/100*s + s_unit;
     box.style.left = obj.px/100*s + s_unit;
