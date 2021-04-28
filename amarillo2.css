@@ -1,0 +1,37 @@
+
+
+.CANADA {
+ /* background-color: #c2d1f0; */
+ /* --CANADA-color: #c2d1f0; */
+ --CANADA-hue: 220;
+ --CANADA-sat: 61%;
+ --CANADA-lit: 85%;
+ background-color: hsl(var(--CANADA-hue), var(--CANADA-sat), var(--CANADA-lit));
+ color: hsl(var(--CANADA-hue), var(--CANADA-sat), var(--CANADA-lit));
+}
+.MEXICO {
+ background-color: #ffe6b3; /* yellow */
+ background-color: #b3e6cc;
+ color: #b3e6cc;
+}
+
+.US {
+ background-color: #ffcc99;
+ color: #ffcc99;
+}
+
+.CONSUMPTION {
+ background-image: radial-gradient(#ebf0fa 5%, transparent 20%), radial-gradient(#5c85d6 5%, transparent 20%);
+ background-position: 0 0, 15px 15px;
+ background-size: 30px 30px;
+}
+
+.EXPORT {
+background: repeating-linear-gradient(
+  45deg,
+  currentcolor,
+  currentcolor 14px,
+  #5c85d6aa 16px,
+  #5c85d6aa 16px
+);
+}

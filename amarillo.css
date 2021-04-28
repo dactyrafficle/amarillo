@@ -2,9 +2,6 @@ html, body {
  font-family: calibri;
 }
 
-.table {
- display: table;
-}
 .row {
  display: table-row-group;
 }
@@ -41,15 +38,4 @@ html, body {
 }
 .box:hover {
  filter: brightness(90%);
-}
-
-.CANADA {
- background-color: #c2d1f0;
-}
-
-.CANADA.CONSUMPTION {
-  background-image: radial-gradient(#ebf0fa 20%, transparent 20%), radial-gradient(#5c85d6 20%, transparent 20%);
-  /* background-color: #c2d1f0; */
-  background-position: 0 0, 15px 15px;
-  background-size: 30px 30px;
 }
